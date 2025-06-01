@@ -1,4 +1,4 @@
-## Wei's TCM
+[## Wei's TCM](https://weitcm.github.io/WeisTCM/)
 ### Acupuncture clinic in Singapore
 
 Address: Block 861 Tampines Ave 5, #01-589, Singapore 520861
