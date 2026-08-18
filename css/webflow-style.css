@@ -2096,7 +2096,7 @@ textarea.w-input, textarea.w-select {
 
 body {
   color: var(--color--c1);
-  font-family: InterTight, sans-serif;
+  font-family: InterTight, 'MiSans', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 150%;
@@ -4437,6 +4437,11 @@ figcaption {
   }
 }
 
+/* Chinese text uses MiSans (see css/misans.css), bundled locally so it renders
+   identically on every device instead of falling back to whatever CJK font the
+   OS ships — Microsoft YaHei on Windows, PingFang on iOS/macOS, Noto on
+   Android. Full character coverage, so new Chinese copy needs no extra work. */
+
 @font-face {
   font-family: 'InterTight';
   src: url('../font/intertight-bold.ttf') format('truetype');
@@ -4732,7 +4737,7 @@ button.lang-switch,
 .lang-switch__label--en { transform: translateX(-3px); }
 .lang-switch__label--zh {
   font-size: 1rem;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: 'MiSans', Georgia, serif;
   transform: translateX(3px);
 }
 .lang-switch__label { color: #000; }
@@ -4929,4 +4934,118 @@ html.lang-typing [data-i18n] {
 @media (max-width: 559px) {
   .herbs__grid { grid-template-columns: 1fr; }
   .herb-card__glyph { font-size: 2.8rem; }
+}
+
+/* ---------- "Cascade" credit ---------- */
+/* Mirrors the animated wordmark on cascade-sg.com: the same 90deg gradient,
+   the same 200% background-size scrolled by a 6s linear loop.
+   Their site sets this in Circular Std, which is a commercial Lineto face
+   licensed to their domain — it is deliberately NOT copied here. The credit
+   inherits Inter Tight instead; at this size the difference is slight.
+   The transparent fill is guarded by @supports so that a browser without
+   background-clip:text shows normal-coloured text rather than nothing. */
+/* Circular Std — supplied by the studio, used only for the Cascade wordmark.
+   Just the Bold face is shipped: .cascade-mark is the only consumer and it
+   renders at 700, so the other seven weights are not served. Converted from
+   the supplied .otf to woff2 (73 KB -> 35 KB); woff2 only, matching MiSans. */
+@font-face {
+  font-family: 'Circular';
+  src: url('../font/circularstd-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Wordmark treatment copied from the .brand-text rule on cascade-sg.com:
+   Circular Std, uppercase, 700, 0.18em tracking. Their font-size (1.3rem) and
+   margin-left are specific to their nav bar, so the credit inherits the
+   footer's size instead of forcing 1.3rem into a 16px line. */
+.cascade-mark {
+  font-family: 'Circular', InterTight, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  /* doubles the gap after "Made by": a space in Inter Tight is 0.25em, so
+     adding another 0.25em makes the visual gap twice as wide */
+  margin-left: 0.25em;
+  /* letter-spacing also applies after the final letter; this pulls back that
+     trailing gap so the wordmark still sits flush with the row's right edge */
+  margin-right: -0.18em;
+}
+/* Both halves of the legal row must stay on one line at EVERY width, not just
+   under 767px. Two reasons:
+   1. desktop had no nowrap at all, so "Made by" / "CASCADE" could break;
+   2. the -0.18em above is subtracted when the browser computes the credit's
+      intrinsic (max-content) width, but the trailing letter-space is still
+      part of the inline advance at layout time — leaving the box ~1px short
+      of its own text and forcing a break. nowrap makes that 1px overflow
+      into the negative margin instead, which is the intended effect. */
+.footer__legal > * {
+  white-space: nowrap;
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .cascade-mark {
+    background-image: linear-gradient(
+      90deg,
+      #00d8f0 0%,
+      #00a8f0 14%,
+      #0078f0 28%,
+      #4860f0 42%,
+      #7848f0 56%,
+      #9060f0 70%,
+      #c048f0 84%,
+      #00d8f0 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: cascadeFlow 6s linear infinite;
+  }
+}
+@keyframes cascadeFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cascade-mark { animation: none; }
+}
+
+/* ---------- Footer legal row: one line on phones ---------- */
+/* The two items are pushed apart by margin-left:auto, so the visible space
+   between them is whatever width the text does NOT use. Sizing the text to
+   fill the row therefore leaves them almost touching on narrow screens.
+   Instead we reserve a fixed 2.75rem of clear space up front and let the text
+   have the rest:
+
+     font-size = (viewport - 2rem padding - 2.75rem separation) / 21.89em
+
+   24.233em is the browser-measured width of the longest (English) variant:
+   "© Wei's TCM. All rights reserved." (14.105em) + "Made by CASCADE" (10.128em).
+   The second figure includes the .cascade-mark wordmark treatment — uppercase
+   in Circular Std at 700, 0.18em tracking, 0.25em leading margin — ~2.3em wider than
+   the plain lowercase text was. Re-measure this constant if that treatment or
+   the wording changes; it is not derivable by hand. Because Inter Tight is
+   self-hosted, the figure is identical on every device.
+
+   The separation stays a constant ~44px from ~320px up to ~462px, where the
+   font reaches its 1rem cap and the gap simply grows. The 0.625rem floor keeps
+   the row from overflowing on a 280px foldable. Chinese measures 21.72em, so
+   it always has more room than English. */
+@media (max-width: 767px) {
+  .footer__legal {
+    flex-flow: row nowrap !important;
+    align-items: center;
+    gap: 0.6em;
+    font-size: clamp(0.625rem, calc((100vw - 2rem - 2.75rem) / 24.233), 1rem);
+  }
+  .footer__legal > * {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .footer__legal > *:last-child {
+    margin-left: auto;
+  }
 }
