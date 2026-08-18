@@ -4936,12 +4936,67 @@ html.lang-typing [data-i18n] {
   .herb-card__glyph { font-size: 2.8rem; }
 }
 
+/* ---------- Clinic closure notice (home page, above the hero) ---------- */
+/* Markup lives in index.html between the CLINIC CLOSURE NOTICE comments and is
+   meant to be commented in and out as closures come and go. */
+.notice {
+  padding-bottom: 1rem;
+}
+.notice__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(255, 71, 58, 0.28);
+  background: rgba(255, 71, 58, 0.06);
+  border-radius: 2rem;
+}
+.notice__badge {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  background: #ff473a;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+}
+.notice__text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.notice__text strong {
+  font-weight: 700;
+}
+.notice__link {
+  color: #ff473a;
+  font-weight: 700;
+  text-decoration: underline;
+}
+.notice__link:hover {
+  text-decoration: none;
+}
+@media (max-width: 767px) {
+  .notice__inner {
+    flex-flow: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 1.25rem;
+  }
+  .notice__text {
+    font-size: 0.9rem;
+  }
+}
+
 /* ---------- "Cascade" credit ---------- */
 /* Mirrors the animated wordmark on cascade-sg.com: the same 90deg gradient,
-   the same 200% background-size scrolled by a 6s linear loop.
-   Their site sets this in Circular Std, which is a commercial Lineto face
-   licensed to their domain — it is deliberately NOT copied here. The credit
-   inherits Inter Tight instead; at this size the difference is slight.
+   the same 200% background-size scrolled by a 6s linear loop, set in the
+   Circular Std Bold supplied by the studio (see the @font-face below).
    The transparent fill is guarded by @supports so that a browser without
    background-clip:text shows normal-coloured text rather than nothing. */
 /* Circular Std — supplied by the studio, used only for the Cascade wordmark.
