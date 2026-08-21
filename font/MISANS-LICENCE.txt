@@ -1,0 +1,23 @@
+MiSans (Version 4.003)
+Copyright (c) 2020-2023 Beijing Xiaomi Mobile Software Co., Ltd. All Rights Reserved.
+Designed by Beijing Xiaomi Mobile Software Co., Ltd & Hanyi Fonts.
+
+Used on this site for all Chinese (CJK) text. The Latin typeface is Inter Tight.
+
+Licence
+-------
+MiSans Global is free for commercial use worldwide, on any platform and in any
+commercial project, per Xiaomi's published terms: https://hyperos.mi.com/font/
+
+Xiaomi's terms ask that any product embedding the font state that MiSans is
+used — this file serves that purpose.
+
+Files
+-----
+css/misans.css          @font-face declarations (377 faces, unicode-range split)
+font/misans/regular/    weight 400 woff2 chunks
+font/misans/bold/       weight 700 woff2 chunks
+
+The web font chunks were produced by cn-font-split and distributed via the
+npm package `misans-webfont` (4.3.1), which is itself Apache-2.0 licensed;
+that licence covers the packaging tooling, not the typeface.
